@@ -1,5 +1,8 @@
 package ee.ut;
 
+import ee.ut.data.Warning;
+import ee.ut.utils.RegionChecker;
+import ee.ut.utils.XMLParser;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -23,5 +26,12 @@ public class Main {
         List<Warning> warnings = XMLParser.extractWarnings(inputXML);
 
         System.out.println(warnings);
+
+        for (Warning warning : warnings) {
+            RegionChecker.removeCorrectRegions(warning);
+        }
+
+        System.out.println(warnings);
+
     }
 }

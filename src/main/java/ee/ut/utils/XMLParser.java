@@ -1,5 +1,9 @@
-package ee.ut;
+package ee.ut.utils;
 
+import ee.ut.data.Access;
+import ee.ut.data.Protector;
+import ee.ut.data.ProtectorType;
+import ee.ut.data.Warning;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -22,7 +26,7 @@ public class XMLParser {
 
     private XMLParser(){}
 
-    static List<Warning> extractWarnings(File inputXML) throws ParserConfigurationException, IOException, SAXException {
+    public static List<Warning> extractWarnings(File inputXML) throws ParserConfigurationException, IOException, SAXException {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();

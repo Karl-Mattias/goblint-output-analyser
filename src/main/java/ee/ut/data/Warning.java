@@ -1,4 +1,4 @@
-package ee.ut;
+package ee.ut.data;
 
 import java.util.List;
 

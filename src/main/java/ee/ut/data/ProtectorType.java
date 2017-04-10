@@ -1,4 +1,4 @@
-package ee.ut;
+package ee.ut.data;
 
 /**
  * Created by Karl-Mattias on 08.04.2017

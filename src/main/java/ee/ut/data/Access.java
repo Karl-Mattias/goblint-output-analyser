@@ -1,4 +1,6 @@
-package ee.ut;
+package ee.ut.data;
+
+import com.google.common.base.Objects;
 
 import java.util.Set;
 
@@ -18,17 +20,16 @@ public class Access {
         this.protectors = protectors;
     }
 
+    public Set<Protector> getProtectors() {
+        return protectors;
+    }
+
     public String getRegion() {
         return region;
     }
 
     public void setRegion(String region) {
         this.region = region;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof Access && isWrite == ((Access) obj).isWrite && location.equals(((Access) obj).location);
     }
 
     @Override
@@ -45,5 +46,21 @@ public class Access {
         sb.append(" with ").append(protectors.toString());
 
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Access access = (Access) o;
+        return isWrite == access.isWrite &&
+                Objects.equal(location, access.location) &&
+                Objects.equal(protectors, access.protectors) &&
+                Objects.equal(region, access.region);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(location, isWrite, protectors, region);
     }
 }
