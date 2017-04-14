@@ -1,7 +1,9 @@
 package ee.ut;
 
+import ee.ut.data.CompactWarning;
 import ee.ut.data.Warning;
 import ee.ut.utils.RegionChecker;
+import ee.ut.utils.WarningAnalyser;
 import ee.ut.utils.XMLParser;
 import org.xml.sax.SAXException;
 
@@ -26,12 +28,17 @@ public class Main {
         List<Warning> warnings = XMLParser.extractWarnings(inputXML);
 
         System.out.println(warnings);
+        System.out.println();
+
+        List<CompactWarning> compactWarnings = new ArrayList<>();
 
         for (Warning warning : warnings) {
             RegionChecker.removeCorrectRegions(warning);
+            compactWarnings.add(WarningAnalyser.getCompactWarning(warning));
         }
 
-        System.out.println(warnings);
-
+        compactWarnings.stream()
+                .sorted((c1, c2) -> Float.compare(c2.getStrengthOfBelief(), c1.getStrengthOfBelief()))
+                .forEach(System.out::println);
     }
 }

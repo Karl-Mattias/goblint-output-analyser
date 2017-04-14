@@ -32,6 +32,24 @@ public class Access {
         this.region = region;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public boolean isWrite() {
+        return isWrite;
+    }
+
+    public String locationString() {
+        StringBuilder sb = new StringBuilder();
+
+        if (isWrite) sb.append("Write @");
+        else sb.append("Read @");
+
+        sb.append(location);
+        return sb.toString();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
