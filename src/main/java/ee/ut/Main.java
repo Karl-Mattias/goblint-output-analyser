@@ -27,18 +27,23 @@ public class Main {
         File inputXML = new File(args[0]);
         List<Warning> warnings = XMLParser.extractWarnings(inputXML);
 
-        System.out.println(warnings);
-        System.out.println();
-
         List<CompactWarning> compactWarnings = new ArrayList<>();
+        List<Warning> noCompactWarnings = new ArrayList<>();
 
         for (Warning warning : warnings) {
             RegionChecker.removeCorrectRegions(warning);
-            compactWarnings.add(WarningAnalyser.getCompactWarning(warning));
+            CompactWarning compactWarning = WarningAnalyser.getCompactWarning(warning);
+            if (compactWarning == null || compactWarning.getStrengthOfBelief() <= 0.5) {
+                noCompactWarnings.add(warning);
+            } else {
+                compactWarnings.add(compactWarning);
+            }
         }
 
         compactWarnings.stream()
                 .sorted((c1, c2) -> Float.compare(c2.getStrengthOfBelief(), c1.getStrengthOfBelief()))
                 .forEach(System.out::println);
+
+        noCompactWarnings.forEach(System.out::println);
     }
 }

@@ -31,6 +31,10 @@ public class WarningAnalyser {
                 .max(Comparator.comparing(Map.Entry::getValue))
                 .orElse(null);
 
+        if (mostCommonProtector == null) {
+            return null;
+        }
+
         List<Access> causedBy = new ArrayList<>();
         List<Access> holdsIn = new ArrayList<>();
 
@@ -42,7 +46,7 @@ public class WarningAnalyser {
             }
         }
 
-        float strengthOfBelief = nrOfAccesses / mostCommonProtector.getValue();
+        float strengthOfBelief = (float) mostCommonProtector.getValue() / nrOfAccesses;
 
         return new CompactWarning(causedBy, holdsIn, mostCommonProtector.getKey(), strengthOfBelief, warning.getId(), warning);
     }

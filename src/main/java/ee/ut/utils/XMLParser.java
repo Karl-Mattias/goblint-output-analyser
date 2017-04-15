@@ -38,6 +38,9 @@ public class XMLParser {
 
         for (int i = 0; i < childNodes.getLength(); i++) {
             Element element = (Element) childNodes.item(i);
+
+            if (element.getAttribute("status").equals("safe")) continue;
+
             Warning warning = new Warning(element.getAttribute("id"));
 
             List<Access> accesses = extractAccesses(element);
