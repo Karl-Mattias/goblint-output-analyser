@@ -17,6 +17,9 @@ import java.util.*;
  */
 public class Main {
 
+    // What must the ratio of memory accesses to accesses with the given belief be for the belief to be noted
+    private static final double BELIEF_THRESHOLD = 0.5;
+
     public static void main(String[] args) throws IOException, SAXException, ParserConfigurationException {
 
         if (args.length < 1) {
@@ -33,7 +36,7 @@ public class Main {
         for (Warning warning : warnings) {
             RegionChecker.removeCorrectRegions(warning);
             CompactWarning compactWarning = WarningAnalyser.getCompactWarning(warning);
-            if (compactWarning == null || compactWarning.getStrengthOfBelief() <= 0.5) {
+            if (compactWarning == null || compactWarning.getStrengthOfBelief() <= BELIEF_THRESHOLD) {
                 noCompactWarnings.add(warning);
             } else {
                 compactWarnings.add(compactWarning);
