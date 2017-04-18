@@ -59,9 +59,9 @@ public class Access {
 
         sb.append(location);
 
-        if (region != null) sb.append(" in region ").append(region);
+        if (region != null) sb.append(" in region \"").append(region).append("\"");
 
-        sb.append(" with ").append(protectors.toString());
+        sb.append(" with protectors ").append(protectors.toString());
 
         return sb.toString();
     }
