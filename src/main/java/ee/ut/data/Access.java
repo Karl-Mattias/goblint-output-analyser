@@ -43,8 +43,8 @@ public class Access {
     public String locationString() {
         StringBuilder sb = new StringBuilder();
 
-        if (isWrite) sb.append("Write @");
-        else sb.append("Read @");
+        if (isWrite) sb.append("write@");
+        else sb.append("read@");
 
         sb.append(location);
         return sb.toString();
@@ -54,8 +54,8 @@ public class Access {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        if (isWrite) sb.append("Write @");
-        else sb.append("Read @");
+        if (isWrite) sb.append("write@");
+        else sb.append("read@");
 
         sb.append(location);
 

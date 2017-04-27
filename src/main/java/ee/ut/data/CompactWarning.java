@@ -5,16 +5,16 @@ import java.util.*;
 /**
  * Created by Karl-Mattias on 11.04.2017
  */
-public class CompactWarning {
+public class CompactWarning extends Warning {
 
     private final List<String> causedBy;  // Where the protection belief does not hold
     private final List<String> holdsIn;  //  Where the protection belief holds
     private final Protector belief;
     private final float strengthOfBelief;
     private final String location;
-    private final Warning warning;
+    private final BasicWarning warning;
 
-    public CompactWarning(List<Access> causedBy, List<Access> holdsIn, Protector belief, float strengthOfBelief, String location, Warning warning) {
+    public CompactWarning(List<Access> causedBy, List<Access> holdsIn, Protector belief, float strengthOfBelief, String location, BasicWarning warning) {
         this.causedBy = compactString(causedBy);
         this.holdsIn = compactString(holdsIn);
         this.belief = belief;
@@ -27,31 +27,8 @@ public class CompactWarning {
         return strengthOfBelief;
     }
 
-    public Warning getWarning() {
+    public BasicWarning getWarning() {
         return warning;
-    }
-
-    // (Read @x, Write @x) -> Read&Write @x
-    private List<String> compactString(List<Access> accesses) {
-
-        Map<String, Access> accessMap = new HashMap<>();
-        List<String> outPut = new ArrayList<>();
-
-        for (Access access : accesses) {
-            if (accessMap.containsKey(access.getLocation()) &&
-                    (accessMap.get(access.getLocation()).isWrite() ^ access.isWrite())) {
-
-                outPut.add(access.isWrite() ? "Read&" + access.locationString() : "Write&" + access.locationString());
-                accessMap.remove(access.getLocation());
-
-            } else {
-                accessMap.put(access.getLocation(), access);
-            }
-        }
-
-        accessMap.forEach((key, value) -> outPut.add(value.locationString()));
-
-        return outPut;
     }
 
     @Override
@@ -61,5 +38,10 @@ public class CompactWarning {
                 "\n   Probably caused by " + causedBy +
                 " not having " + belief +
                 " like in " + holdsIn;
+    }
+
+    @Override
+    public String getId() {
+        return warning.getId();
     }
 }

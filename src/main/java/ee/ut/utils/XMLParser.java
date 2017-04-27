@@ -3,7 +3,7 @@ package ee.ut.utils;
 import ee.ut.data.Access;
 import ee.ut.data.Protector;
 import ee.ut.data.ProtectorType;
-import ee.ut.data.Warning;
+import ee.ut.data.BasicWarning;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -26,14 +26,14 @@ public class XMLParser {
 
     private XMLParser(){}
 
-    public static List<Warning> extractWarnings(File inputXML) throws ParserConfigurationException, IOException, SAXException {
+    public static List<BasicWarning> extractWarnings(File inputXML) throws ParserConfigurationException, IOException, SAXException {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document document = builder.parse(inputXML);
         document.getDocumentElement().normalize();
 
-        List<Warning> warnings = new ArrayList<>();
+        List<BasicWarning> warnings = new ArrayList<>();
         NodeList childNodes = document.getDocumentElement().getElementsByTagName("mem");
 
         for (int i = 0; i < childNodes.getLength(); i++) {
@@ -41,7 +41,7 @@ public class XMLParser {
 
             if (element.getAttribute("status").equals("safe")) continue;
 
-            Warning warning = new Warning(element.getAttribute("id"));
+            BasicWarning warning = new BasicWarning(element.getAttribute("id"));
 
             List<Access> accesses = extractAccesses(element);
 
@@ -73,6 +73,8 @@ public class XMLParser {
                     String id = protectorElement.getAttribute("id");
                     String type = protectorElement.getAttribute("type");
 
+                    if (type.contains("-")) type = type.split("-")[1];
+
                     protectors.add(new Protector(id, ProtectorType.valueOf(type.toUpperCase())));
                 }
             }
@@ -93,7 +95,6 @@ public class XMLParser {
                     access.setRegion(region);
                 }
             }
-
         }
 
         return accessList;

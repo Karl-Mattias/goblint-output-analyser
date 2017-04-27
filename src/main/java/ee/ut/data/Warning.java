@@ -1,38 +1,37 @@
 package ee.ut.data;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by Karl-Mattias on 08.04.2017
+ * Created by Karl-Mattias on 24.04.2017
  */
-public class Warning {
+public abstract class Warning {
 
-    private final String id;
-    private List<Access> accesses;
+    public abstract String getId();
 
-    public Warning(String id) {
-        this.id = id;
-    }
+    // (read@x, write@x) -> read&write@x
+    List<String> compactString(List<Access> accesses) {
 
-    public String getId() {
-        return id;
-    }
+        Map<String, Access> accessMap = new HashMap<>();
+        List<String> outPut = new ArrayList<>();
 
-    public void setAccesses(List<Access> accesses) {
-        this.accesses = accesses;
-    }
-
-    public List<Access> getAccesses() {
-        return accesses;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Memory location ").append(id);
         for (Access access : accesses) {
-            sb.append("\n   ").append(access.toString());
+            if (accessMap.containsKey(access.getLocation()) &&
+                    (accessMap.get(access.getLocation()).isWrite() ^ access.isWrite())) {
+
+                outPut.add(access.isWrite() ? "read&" + access.locationString() : "write&" + access.locationString());
+                accessMap.remove(access.getLocation());
+
+            } else {
+                accessMap.put(access.getLocation(), access);
+            }
         }
-        return sb.toString();
+
+        accessMap.forEach((key, value) -> outPut.add(value.locationString()));
+
+        return outPut;
     }
 }

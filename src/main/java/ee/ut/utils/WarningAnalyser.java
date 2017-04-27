@@ -1,9 +1,6 @@
 package ee.ut.utils;
 
-import ee.ut.data.Access;
-import ee.ut.data.CompactWarning;
-import ee.ut.data.Protector;
-import ee.ut.data.Warning;
+import ee.ut.data.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,7 +16,7 @@ public class WarningAnalyser {
 
     private WarningAnalyser(){}
 
-    public static CompactWarning getCompactWarning(Warning warning) {
+    public static Warning getCompactWarning(BasicWarning warning) {
 
         List<Access> accesses = warning.getAccesses();
         int nrOfAccesses = accesses.size();
@@ -32,7 +29,7 @@ public class WarningAnalyser {
                 .orElse(null);
 
         if (mostCommonProtector == null) {
-            return null;
+            return new NoLockWarning(warning);
         }
 
         List<Access> causedBy = new ArrayList<>();
